@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const authToken = import.meta.env.VITE_AUTH_TOKEN;
 const host = import.meta.env.VITE_SOCKET_IO_HOST;
+
+const showToastMessage = (action: string) => {
+  toast.info(`Action: ${action} `, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
 
 const MealPlan = () => {
   const [contentLogs, setContentLogs] = useState("");
@@ -29,6 +38,7 @@ const MealPlan = () => {
       if (data) {
         const jsonString = JSON.stringify(data, null, 2);
         setContentLogs((content) => content + "\n\n" + jsonString);
+        showToastMessage(data.action);
       }
     });
 
@@ -41,16 +51,19 @@ const MealPlan = () => {
   }, []);
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
       <h3>ID: {id}</h3>
-      <textarea
-        name=""
-        id=""
-        cols={100}
-        rows={30}
-        value={contentLogs}
-        disabled
-      />
+      <h5>Message Logs</h5>
+      <textarea cols={100} rows={35} value={contentLogs} disabled />
+      <ToastContainer />
     </div>
   );
 };
