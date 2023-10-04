@@ -4,7 +4,6 @@ import { io } from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const authToken = import.meta.env.VITE_AUTH_TOKEN;
 const host = import.meta.env.VITE_SOCKET_IO_HOST;
 
 const showToastMessage = (action: string) => {
@@ -16,13 +15,14 @@ const showToastMessage = (action: string) => {
 const MealPlan = () => {
   const [contentLogs, setContentLogs] = useState("");
 
+  const token = localStorage.getItem("token");
   const { id } = useParams();
 
   useEffect(() => {
     const connectionOption = {
       transports: ["websocket"],
       auth: {
-        token: `Bearer ${authToken}`,
+        token: `Bearer ${token}`,
       },
       withCredentials: true,
     };

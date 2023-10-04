@@ -1,11 +1,14 @@
 # Demo socket.io with React.js
+Demo using socket.io-client in React.js with auth token
 
-TO start 
-1. add ```VITE_AUTH_TOKEN``` in .env
 
+
+Step to start 
+1. add ```VITE_SOCKET_IO_HOST``` in .env
 2. ```npm run dev```
-3. enter valid meal plan id
-4. click link
-5. done. (see logs that connect success or not)
-6. trigger backend to send event 
-7. see result in text area. 🚀
+3. Enter valid AuthToken
+4. Enter valid meal plan id
+5. click link
+6. done. (see logs that connect success or not)
+7. trigger backend to send event 
+8. see result in text area. 🚀
