@@ -6,17 +6,24 @@ import "react-toastify/dist/ReactToastify.css";
 
 const host = import.meta.env.VITE_SOCKET_IO_HOST;
 
-const showToastMessage = (action: string) => {
-  toast.info(`Action: ${action} `, {
-    position: toast.POSITION.TOP_RIGHT,
-  });
-};
+type ListenEvent = "meal-plan" | "food-program";
 
-const MealPlan = () => {
+interface ISocketListenerProps {
+  listenEvent: ListenEvent;
+}
+
+const SocketListener = ({ listenEvent }: ISocketListenerProps) => {
   const [contentLogs, setContentLogs] = useState("");
 
   const token = localStorage.getItem("token");
   const { id } = useParams();
+  const eventName = `${listenEvent}-${id}`;
+
+  const showToastMessage = (action: string) => {
+    toast.info(`Action: ${action} `, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
 
   useEffect(() => {
     const connectionOption = {
@@ -34,7 +41,7 @@ const MealPlan = () => {
       console.log(`connected with id: ${socket.id}`);
     });
 
-    socket.on(`meal-plan-${id}`, (data) => {
+    socket.on(eventName, (data) => {
       if (data) {
         const jsonString = JSON.stringify(data, null, 2);
         setContentLogs((content) => content + "\n\n" + jsonString);
@@ -46,9 +53,7 @@ const MealPlan = () => {
       console.log("disconnected");
       alert("disconnected");
     });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [eventName, token]);
 
   return (
     <div
@@ -60,7 +65,9 @@ const MealPlan = () => {
         width: "100vw",
       }}
     >
-      <h3>ID: {id}</h3>
+      <h3>
+        {listenEvent === "meal-plan" ? "Meal Plan" : "Food Program"} ID: {id}
+      </h3>
       <h5>Message Logs</h5>
       <textarea cols={100} rows={35} value={contentLogs} disabled />
       <ToastContainer />
@@ -68,4 +75,4 @@ const MealPlan = () => {
   );
 };
 
-export default MealPlan;
+export default SocketListener;

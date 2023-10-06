@@ -7,7 +7,7 @@ Step to start
 1. add ```VITE_SOCKET_IO_HOST``` in .env
 2. ```npm run dev```
 3. Enter valid AuthToken
-4. Enter valid meal plan id
+4. Enter valid ```meal plan id``` and/or ```food program id```
 5. click link
 6. done. (see logs that connect success or not)
 7. trigger backend to send event 
